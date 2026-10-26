@@ -1,3 +1,19 @@
+### Prompt Sample Used
+
+This is a blank Kotlin Multiplatform wallet project with Android and iOS targets. Integrate Multipaz from scratch to create a minimal local mDL holder:
+
+First inspect the project and determine its Gradle/dependency style, source sets, Android manifest, and iOS entry points.
+
+Add only the Multipaz dependencies required for a local holder, standard mDL document type, secure storage, and QR-based mdoc presentment.
+
+Put shared document/store/presentment logic in commonMain only where supported. Put Android initialization, permissions, BLE handling, and manifest wiring in Android code. Put iOS-specific integration in iOS/Swift code.
+
+Add Android NFC credential presentation.
+
+Run the relevant build/test tasks and report results.
+
+--
+
 This is a Kotlin Multiplatform project targeting Android, iOS.
 
 * [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
