@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MultipazSkillTest</string>
+    <string name="nfc_service_description">Local mDL NFC presentation</string>
+    <string name="nfc_engagement_description">mDL NFC engagement</string>
+    <string name="nfc_ndef_description">NDEF type 4 tag</string>
+    <string name="nfc_data_transfer_description">mDL NFC data transfer</string>
 </resources>
