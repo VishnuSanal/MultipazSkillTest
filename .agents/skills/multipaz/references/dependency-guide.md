@@ -8,9 +8,11 @@
 
 ## Select dependencies from current evidence
 
-Use KDoc to identify the module that owns each public API, then inspect the
-current Gradle declarations and the closest current sample or test. Do not copy
-module names, Maven coordinates, or dependency scopes from this skill.
+Start with the target's resolved Gradle declarations and local artifact sources.
+Use KDoc to discover candidate public APIs, then inspect the closest target test
+or sample. Consult an upstream sample only when local evidence cannot establish
+the needed wiring. Do not copy module names, Maven coordinates, or dependency
+scopes from this skill.
 
 ## Dependency rules
 

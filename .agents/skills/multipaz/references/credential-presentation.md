@@ -8,9 +8,11 @@
 
 ## Current-source discovery
 
-Resolve public presentment APIs in [Multipaz KDoc](https://developer.multipaz.org/kdocs/index.html),
-then use `rg` to locate current consent, URI-scheme, Digital Credentials, and
-proximity-presentment samples or tests in the target checkout.
+Use the target project's resolved artifact sources and compilation to verify the
+selected public presentment APIs. [Multipaz KDoc](https://developer.multipaz.org/kdocs/index.html)
+can help discover symbols. Use `rg` to locate consent, URI-scheme, Digital
+Credentials, and proximity-presentment code in the target project; consult an
+upstream sample only when that wiring is not otherwise available.
 
 ## Keep these distinctions clear
 

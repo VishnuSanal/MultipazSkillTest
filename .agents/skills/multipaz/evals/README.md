@@ -8,15 +8,14 @@ These are not executable tests or proof that an implementation compiles.
 Run each scenario against a project that carries real Multipaz version evidence.
 Pick the fixture that matches the scenario:
 
-1. **Current Multipaz checkout.** Use the current
-   https://github.com/openwallet-foundation/multipaz checkout for scenarios that
-   inspect samples, modules, NFC services, or current KDoc-linked APIs.
-2. **Public consumer sample.** Clone
-   https://github.com/openwallet-foundation/multipaz-samples and use
-   `MultipazGettingStartedSample` (released `org.multipaz:*` dependencies on
-   Android and iOS) or `MultipazWholesalePOS`. Use for scenarios that inspect a
-   third-party project's version catalog, dependency style, source sets, and
-   platform wiring.
+1. **Consumer project.** Use an existing Kotlin Multiplatform, Android, or iOS
+   project with declared released `org.multipaz:*` dependencies. Use it for
+   scenarios that inspect a third-party project's version catalog, dependency
+   style, source sets, and platform wiring. Do not clone a project solely to run
+   an evaluation.
+2. **Current Multipaz checkout.** Use the current
+   https://github.com/openwallet-foundation/multipaz checkout only for scenarios
+   specifically about upstream modules, samples, or Android NFC wiring.
 3. **Your own target project.** Any Kotlin Multiplatform, Android, or iOS project
    with a discoverable Multipaz version in a version catalog, Gradle file, or
    lockfile.
@@ -28,8 +27,10 @@ configured project).
 
 ## Rules
 
-- Every scenario must stay grounded in the current repository and samples.
+- Every scenario must stay grounded in the target project's declared artifacts and
+  files; consult upstream source only when the scenario requires it.
 - NFC scenarios must preserve the Android-only support boundary.
 - Treat any response that generates iOS NFC credential presentation code as a failure.
-- If the project has no local source or current KDoc evidence, a correct response
-  must report that limitation rather than claim an API or sample path is present.
+- Lack of a local upstream source is not a failure for a released-artifact
+  integration. Lack of a declared Multipaz version or required platform-wiring
+  evidence must be reported rather than guessed.

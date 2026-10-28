@@ -180,19 +180,22 @@
 - Evidence of success: the alternative path is explicitly verified against the current version.
 - Validation expectations: response preserves the Android-only NFC boundary.
 
-## 21. Work safely when the target project has no Multipaz source checkout
+## 21. Work safely without a local Multipaz source checkout
 
 - Input task: Add Android NFC presentment to this KMP app. It has no Multipaz
   dependency and no local `samples/testapp` directory.
-- Expected skill behavior: inspect the target, report the missing Multipaz version
-  and sample evidence, and avoid claiming upstream paths are locally verified.
-- Required inspection steps: inspect Gradle dependencies and module layout; identify
-  whether a compatible Multipaz source checkout or release sample is available.
-- Mistakes to avoid: copying an API without current KDoc evidence, inventing a
-  dependency version, or treating an upstream sample path as a target project
-  path.
-- Evidence of success: the response states what evidence is missing and asks for or
-  locates version-matched source before producing implementation code.
+- Expected skill behavior: inspect the target and report the missing Multipaz
+  version. Do not clone upstream source or invent a dependency version. Explain
+  that Android NFC wiring needs a selected released version and compatible
+  source/sample evidence before implementation.
+- Required inspection steps: inspect Gradle dependencies and module layout; confirm
+  that no Multipaz version is declared.
+- Mistakes to avoid: cloning upstream by default, copying an API from current KDoc
+  into an unknown release, inventing a dependency version, or treating an upstream
+  sample path as a target-project path.
+- Evidence of success: the response distinguishes a normal released-artifact flow
+  from the exceptional NFC wiring evidence that is missing, without attempting a
+  clone.
 - Validation expectations: file and dependency evidence supports the conclusion.
 
 ## 22. Build a verifier request with DCQL and OpenID4VP for a verifier app

@@ -1,9 +1,9 @@
 ---
 name: multipaz
 license: Apache-2.0
-compatibility: Resolve public APIs from the current Multipaz KDoc and integration details from the target checkout's current samples and tests. Do not treat this skill as an API reference.
+compatibility: Use the target project's resolved Multipaz artifacts as the version baseline. Consult current KDoc for public-API discovery; consult upstream source only for explicitly source-dependent work.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 description: Use this skill for Multipaz, ISO mdoc or mDL, OpenID4VCI, OpenID4VP, DCQL, W3C Digital Credentials API, credential holder, verifier, issuer, QR presentation, BLE presentation, Android NFC credential presentation, Kotlin Multiplatform wallet, or Swift and Compose integration work built on the Multipaz repository or released modules. Apply it when a task needs module selection, version-aware implementation, project inspection, platform integration, troubleshooting, or migration for Multipaz. Do not use it for unrelated Kotlin work. Never claim that Multipaz NFC credential presentation works on iOS.
 ---
 
@@ -13,13 +13,13 @@ Use this skill when the task is about integrating, upgrading, debugging, or vali
 
 ## Rules
 
-- Treat the target repository as the primary source of truth. Resolve every public type, constructor, property, and function from the [current Multipaz KDoc](https://developer.multipaz.org/kdocs/index.html) before generating code. Inspect the target checkout's current code, tests, samples, and build files for integration details.
+- Treat the target project and its resolved `org.multipaz` artifacts as the primary source of truth. Use [current Multipaz KDoc](https://developer.multipaz.org/kdocs/index.html) to discover public APIs, but do not treat it as version-specific proof for an older released artifact. Do not clone or request the Multipaz repository by default. Consult upstream source or samples only when the task depends on unreleased APIs, Android NFC service or manifest wiring, an API unavailable in the resolved artifact's sources/KDoc, or a compilation/runtime discrepancy.
 - Inspect the target project before editing it: read its build configuration, dependency declarations, source sets, and relevant platform entry points. Use [references/project-inspection.md](references/project-inspection.md) to guide the inspection; keep purely explanatory work scoped to the files needed to answer the question.
 - Check version compatibility before generating code. Do not silently upgrade Multipaz or unrelated dependencies.
 - Keep Android-only code in `androidMain` or Android app modules. Keep iOS-only code in `iosMain` or native Swift code. Keep shared logic in `commonMain` only when the APIs are actually multiplatform.
 - Multipaz NFC credential presentation is currently Android-only. Never generate iOS NFC presentation code, never claim feature parity, and never tell the user to add iOS NFC entitlements for a Multipaz NFC presentment flow. Do not over-correct into "no NFC on iOS": upstream ships CoreNFC-backed tag *reading* for the verifier role under `multipaz/src/iosMain`, which does not change the presentment boundary. See [references/ios-platform.md](references/ios-platform.md).
 - Prefer minimal dependency changes and reuse project conventions such as version catalogs, convention plugins, included builds, or direct dependency style already present in the target project.
-- Do not invent APIs, Maven coordinates, Gradle modules, package names, or platform requirements. KDoc describes public APIs; source, samples, and build files establish implementation wiring and dependencies.
+- Do not invent APIs, Maven coordinates, Gradle modules, package names, or platform requirements. The resolved artifact, target build files, and compilation establish release-specific integration; KDoc is a discovery aid. Source and samples establish wiring only when they are actually consulted.
 - Any type names, paths, or module names in the reference files are discovery
   hints only. Confirm them with current KDoc and `rg`; do not copy them as API
   or build guidance.
@@ -34,7 +34,7 @@ Use this skill when the task is about integrating, upgrading, debugging, or vali
 3. Load only the relevant references.
    Use the routing list below instead of loading everything.
 4. Select modules and samples.
-   Match the requested workflow to the target project's current modules, samples, and tests. Resolve public APIs in current KDoc; do not copy a signature, dependency, or platform requirement from this skill.
+   Match the requested workflow to the target project's modules, resolved artifacts, and existing tests. Use KDoc to discover public APIs, then verify the selected APIs through local artifact sources when available or the affected build. Do not copy a signature, dependency, or platform requirement from this skill.
 5. Respect source-set and platform boundaries.
    Shared document logic can live in `commonMain`; Android NFC services and manifest wiring must stay Android-specific; iOS wallet or Digital Credentials work must follow the supported Swift or `iosMain` paths.
 6. Implement with validation in mind.
@@ -62,7 +62,7 @@ Use this skill when the task is about integrating, upgrading, debugging, or vali
 
 ## Implementation Guardrails
 
-- For Android NFC, locate the current NFC services, manifest entries, and tests in the target checkout before writing code. Do not rely on a path or class name from this skill.
+- For Android NFC, upstream source or a version-matched sample may be necessary to establish the service and manifest wiring. Do not clone it automatically: first inspect the target project and resolved artifact sources; if that evidence is unavailable, report the limitation or ask the user to provide a compatible sample.
 - For iOS, use supported alternatives such as QR presentment, BLE-backed proximity, browser or URI-scheme flows, or Identity Document / Digital Credentials integration only after verifying the requested path in the selected version.
 - When the user asks for cross-platform NFC, explain the platform split clearly: Android supported, iOS not currently supported for Multipaz NFC credential presentation.
 - For Android OpenID4VCI, initialize Multipaz with the Android application context before using `Platform` storage or secure areas, add network permission for real issuers, and wire both the credential-offer scheme and the OAuth redirect scheme.
@@ -72,7 +72,7 @@ Use this skill when the task is about integrating, upgrading, debugging, or vali
 
 ## Validation
 
-- Re-read changed dependency declarations and follow version-catalog aliases or convention plugins to their definitions. Check each public API against current KDoc, and cite the actual source, sample, or test files supporting integration conclusions.
+- Re-read changed dependency declarations and follow version-catalog aliases or convention plugins to their definitions. Verify changed APIs against the resolved artifact sources when available and compilation; use current KDoc as supplementary discovery evidence. Cite only the source or samples actually consulted.
 - Select targeted build and test tasks from the project's build files or documented commands. If task names are unclear, inspect `./gradlew :<module>:tasks --all` for an actual module.
 - A task listing or Gradle `--dry-run` checks task selection, not compilation or tests. Report unavailable checks and tasks with no test sources accurately.
 - For OpenID4VCI or other holder flows that construct `HttpClient`, verify platform Ktor client engines are declared and, when possible, run an Android or iOS launch smoke test. Compile can pass while `HttpClient()` still fails at runtime without an engine.
@@ -84,7 +84,7 @@ Use this skill when the task is about integrating, upgrading, debugging, or vali
 
 Always include:
 
-- the KDoc symbols and current source evidence inspected
+- the resolved version and evidence inspected (target files, artifact sources, KDoc, and/or upstream source as applicable)
 - the modules and source sets used
 - the samples or tests used as implementation anchors
 - the platform-support matrix for the requested workflow

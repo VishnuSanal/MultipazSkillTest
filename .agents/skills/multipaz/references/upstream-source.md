@@ -1,21 +1,23 @@
 # Current API and Source Discovery
 
 This skill deliberately has no source pin. Multipaz KDoc is built from the
-current repository and is the public-API source of truth:
+current repository, so it is useful for public-API discovery but is not
+version-specific proof for a project using an older released artifact:
 
 - [Multipaz KDoc](https://developer.multipaz.org/kdocs/index.html)
 - [Multipaz source repository](https://github.com/openwallet-foundation/multipaz)
 
-## Before generating code
+## Default evidence order
 
-1. Look up every public API in KDoc by its fully qualified symbol. Do not copy
-   signatures, constructor arguments, or package names from this skill.
-2. Inspect the target checkout's current `settings.gradle.kts`, Gradle files,
-   source sets, samples, and tests for module selection and platform wiring.
-3. Use `rg` to find the current implementation or sample by feature and symbol;
-   do not assume a class name or path remains stable.
-4. If KDoc, current source, and the target dependency version do not provide
-   enough evidence, report that limitation instead of guessing.
+1. Read the target's resolved Multipaz version and dependency declarations.
+2. Inspect its Gradle files, source sets, app entry points, and existing tests.
+3. Use local Gradle/IDE artifact sources and compilation to verify the APIs used
+   for a released dependency. Use KDoc to discover symbols or clarify concepts.
+4. Do not clone or request Multipaz source by default.
+5. Consult upstream source or a version-matched sample only for unreleased APIs,
+   Android NFC service/manifest wiring, unavailable artifact sources, or a
+   compilation/runtime discrepancy. If that evidence is essential but absent,
+   report the limitation instead of guessing.
 
 ## Maintenance policy
 
